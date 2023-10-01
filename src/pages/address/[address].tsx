@@ -31,6 +31,10 @@ export default function Address() {
     }
   }, [chain]);
 
+  const fiveTimeout = () => {
+    return true;
+  };
+
   return (
     <>
       <Head>
@@ -41,7 +45,7 @@ export default function Address() {
       </Head>
       <Box>
         <Nav />
-        {explorerName ? (
+        {explorerName || setTimeout(fiveTimeout, 5000) ? (
           <Box marginX={36} marginTop={8}>
             <Box display={"flex"} justifyContent={"f;ex-start"}>
               <Text>Address:&nbsp;</Text>
@@ -51,15 +55,17 @@ export default function Address() {
               <Heading size={"lg"} marginTop={4}>
                 <Link href={mainExplorerLink}>{explorerName}</Link>
               </Heading>
-              {explorers.map((explorer: string): any => {
-                return (
-                  <Heading>
-                    <Link href={`${explorer}${query.address}`}>
-                      {explorerName}
-                    </Link>
-                  </Heading>
-                );
-              })}
+              {explorers
+                .filter((x) => x.name !== explorerName)
+                .map((explorer: any): JSX.Element => {
+                  return (
+                    <Heading>
+                      <Link href={`${explorer.explorer}${query.address}`}>
+                        {explorer.name}
+                      </Link>
+                    </Heading>
+                  );
+                })}
             </Box>
           </Box>
         ) : (
