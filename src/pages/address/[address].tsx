@@ -1,10 +1,35 @@
 import Nav from "@/components/Nav";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Box } from "@chakra-ui/react";
+import { GlobalContext } from "@/context/context";
+import { useContext, useState, useEffect } from "react";
+import { Box, Heading, Text, Link, Spinner } from "@chakra-ui/react";
+import { explorers } from "@/components/explorerLink";
 export default function Address() {
+  const { chain } = useContext(GlobalContext);
   const router = useRouter();
   const { query } = router;
+  const [explorerName, setExplorerName] = useState("");
+  const [mainExplorerLink, setMainExplorerLink] = useState("");
+
+  useEffect((): any => {
+    switch (chain) {
+      case 1:
+        setExplorerName("EtherScan");
+        setMainExplorerLink(`https://etherscan.io/address/${query.address}`);
+        break;
+
+      case 2:
+        setExplorerName("BscScan");
+        setMainExplorerLink(`https://bscscan.com/address/${query.address}`);
+        break;
+
+      case 3:
+        setExplorerName("PolygonScan");
+        setMainExplorerLink(`https://polygonscan.com/address/${query.address}`);
+        break;
+    }
+  }, [chain]);
 
   return (
     <>
@@ -16,6 +41,37 @@ export default function Address() {
       </Head>
       <Box>
         <Nav />
+        {explorerName ? (
+          <Box marginX={36} marginTop={8}>
+            <Box display={"flex"} justifyContent={"f;ex-start"}>
+              <Text>Address:&nbsp;</Text>
+              <Text fontWeight={500}>{query.address}</Text>
+            </Box>
+            <Box display={"flex"} flexDir={"column"}>
+              <Heading size={"lg"} marginTop={4}>
+                <Link href={mainExplorerLink}>{explorerName}</Link>
+              </Heading>
+              {explorers.map((explorer: string): any => {
+                return (
+                  <Heading>
+                    <Link href={`${explorer}${query.address}`}>
+                      {explorerName}
+                    </Link>
+                  </Heading>
+                );
+              })}
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            height={"80vh"}
+          >
+            <Spinner />
+          </Box>
+        )}
       </Box>
     </>
   );

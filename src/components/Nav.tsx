@@ -1,8 +1,14 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text, Divider } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./searchBar";
+
+import { SupportedChains } from "sow-sdk/dist/types";
+import { useRouter } from "next/router";
 export default function Nav() {
+  const router = useRouter();
+  const { query } = router;
+
   return (
     <>
       <Box display={"flex"} flexDirection={"column"}>
@@ -32,6 +38,7 @@ export default function Nav() {
             <SearchBar />
           </Box>
         </Box>
+        <Divider paddingTop={4} />
       </Box>
     </>
   );
