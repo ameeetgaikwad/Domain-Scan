@@ -53,14 +53,19 @@ export default function Address() {
             </Box>
             <Box display={"flex"} flexDir={"column"}>
               <Heading size={"lg"} marginTop={4}>
-                <Link href={mainExplorerLink}>{explorerName}</Link>
+                <Link target="blank" href={mainExplorerLink}>
+                  {explorerName}
+                </Link>
               </Heading>
               {explorers
                 .filter((x) => x.name !== explorerName)
                 .map((explorer: any): JSX.Element => {
                   return (
                     <Heading size={"lg"}>
-                      <Link href={`${explorer.explorer}${query.address}`}>
+                      <Link
+                        target="blank"
+                        href={`${explorer.explorer}${query.address}`}
+                      >
                         {explorer.name}
                       </Link>
                     </Heading>
