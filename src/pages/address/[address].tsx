@@ -59,7 +59,7 @@ export default function Address() {
                 .filter((x) => x.name !== explorerName)
                 .map((explorer: any): JSX.Element => {
                   return (
-                    <Heading>
+                    <Heading size={"lg"}>
                       <Link href={`${explorer.explorer}${query.address}`}>
                         {explorer.name}
                       </Link>
