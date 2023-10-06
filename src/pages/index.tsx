@@ -8,11 +8,10 @@ import { KeyboardEvent, useState, useRef } from "react";
 import { useContext } from "react";
 import Link from "next/link";
 import { GlobalContext } from "@/context/context";
-const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [keyPressed, setKeyPressed] = useState(false);
-  const { loading, setLoading } = useContext(GlobalContext);
+  const { loading } = useContext(GlobalContext);
 
   return (
     <>
@@ -22,7 +21,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box display={"flex"} flexDirection={"column"} padding={"15rem"}>
+      <Box
+        display={"flex"}
+        flexDirection={"column"}
+        padding={"15rem"}
+        backgroundImage={"/bg.jpg"}
+        backgroundSize={"cover"}
+        backgroundPosition={"center"}
+        height={"100vh"}
+      >
         <Box
           display={"flex"}
           justifyContent={"center"}
