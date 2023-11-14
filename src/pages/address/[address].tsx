@@ -4,36 +4,38 @@ import { useRouter } from "next/router";
 import { GlobalContext } from "@/context/context";
 import { useContext, useState, useEffect } from "react";
 import { Box, Heading, Text, Link, Spinner } from "@chakra-ui/react";
-import { explorers } from "@/components/explorerLink";
+import { explorers } from "@/utils/explorerLink";
+import ExplorerLinkStructure from "@/components/explorerLinkStructure";
 export default function Address() {
-  const { chain } = useContext(GlobalContext);
+  const { chain, loading } = useContext(GlobalContext);
   const router = useRouter();
   const { query } = router;
   const [explorerName, setExplorerName] = useState("");
   const [mainExplorerLink, setMainExplorerLink] = useState("");
+  const [logo, setLogo] = useState("");
 
   useEffect((): any => {
     switch (chain) {
       case 1:
         setExplorerName("EtherScan");
         setMainExplorerLink(`https://etherscan.io/address/${query.address}`);
+        setLogo("https://etherscan.io/images/favicon3.ico");
+
         break;
 
       case 2:
         setExplorerName("BscScan");
         setMainExplorerLink(`https://bscscan.com/address/${query.address}`);
+        setLogo("	https://testnet.arbiscan.io/images/favicon.ico");
         break;
 
       case 3:
         setExplorerName("PolygonScan");
         setMainExplorerLink(`https://polygonscan.com/address/${query.address}`);
+        setLogo("https://polygonscan.com/images/favicon.ico");
         break;
     }
   }, [chain]);
-
-  const fiveTimeout = () => {
-    return true;
-  };
 
   return (
     <>
@@ -45,30 +47,27 @@ export default function Address() {
       </Head>
       <Box>
         <Nav />
-        {explorerName || setTimeout(fiveTimeout, 5000) ? (
-          <Box marginX={36} marginTop={8}>
+        {explorerName && !loading ? (
+          <Box marginX={44} marginTop={8}>
             <Box display={"flex"} justifyContent={"f;ex-start"}>
               <Text>Address:&nbsp;</Text>
               <Text fontWeight={500}>{query.address}</Text>
             </Box>
             <Box display={"flex"} flexDir={"column"}>
-              <Heading size={"lg"} marginTop={4}>
-                <Link target="blank" href={mainExplorerLink}>
-                  {explorerName}
-                </Link>
-              </Heading>
+              <ExplorerLinkStructure
+                explorerName={explorerName}
+                mainExplorerLink={mainExplorerLink}
+                logo={logo}
+              />
               {explorers
                 .filter((x) => x.name !== explorerName)
                 .map((explorer: any): JSX.Element => {
                   return (
-                    <Heading size={"lg"}>
-                      <Link
-                        target="blank"
-                        href={`${explorer.explorer}${query.address}`}
-                      >
-                        {explorer.name}
-                      </Link>
-                    </Heading>
+                    <ExplorerLinkStructure
+                      explorerName={explorer.name}
+                      mainExplorerLink={`${explorer.explorer}${query.address}`}
+                      logo={explorer.logo}
+                    />
                   );
                 })}
             </Box>

@@ -8,11 +8,13 @@ import { useRouter } from "next/router";
 import { detectNameService } from "sow-sdk/dist/utils/detectNameService";
 
 export default function SearchBar() {
-  const { userDomain, setUserDomain, setLoading, setChain } =
+  const { userDomain, setUserDomain, setLoading, setChain, chain } =
     useContext(GlobalContext);
   const router = useRouter();
-
   const searchAddress = () => {
+    if (userDomain === "") {
+      return;
+    }
     setLoading(true);
     const sow = new SoWsdk();
     sow
@@ -54,12 +56,17 @@ export default function SearchBar() {
                 searchAddress();
               }
             }}
+            borderColor={"white"}
+            _hover={{
+              borderColor: "",
+            }}
           />
         </InputGroup>
         <Button
           borderRightRadius={"5px"}
           borderLeftRadius={"0px"}
           onClick={searchAddress}
+          backgroundColor={"white"}
         >
           <SearchIcon />
         </Button>
